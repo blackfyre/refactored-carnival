@@ -4,9 +4,10 @@
   "description": "Just playing around",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "npm run dev -- --watch",
-    "prod": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    "compile-dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "compile-watch": "npm run dev -- --watch",
+    "compile-prod": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "start": "node ./server/bin/www"
   },
   "repository": {
     "type": "git",
@@ -20,10 +21,18 @@
   "homepage": "https://github.com/blackfyre/refactored-carnival#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
     "express": "^4.16.3",
+    "http-errors": "~1.6.2",
+    "jade": "^1.11.0",
+    "morgan": "~1.9.0",
+    "path": "^0.12.7",
     "vue": "^2.5.16"
   },
   "devDependencies": {
+    "bootstrap": "^4.1.2",
+    "bootswatch": "^4.1.2",
     "cross-env": "^5.2.0",
     "laravel-mix": "^2.1.11"
   }

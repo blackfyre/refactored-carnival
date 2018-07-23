@@ -12,6 +12,6 @@ let mix = require('laravel-mix');
  */
 
 mix
-  .setPublicPath('./')
-  .copy('src/index.html', 'build')
-  .js('src/app.js', 'build');
+    .setPublicPath('./build')
+    .js('src/js/app.js', 'build/js')
+    .sass('src/scss/app.scss', 'build/css');
