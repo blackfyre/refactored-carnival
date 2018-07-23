@@ -1,6 +1,6 @@
 The task is to implement a web-app. You’re free to choose the technologies, frameworks and libraries that you want to solve the task, however we expect that you adhere to the following points:
 
-- [ ] Create REST endpoints for providing the data resources exposed below.
+- [x] Create REST endpoints for providing the data resources exposed below.
 - [ ] Create a functionality to render the publishing item and enable the UI to create,update and delete - items.
 - [ ] Create a graph page rendering the reach data, using a library like d3.js or Highcharts
 - [ ] Create a websocket implementation and push the data to connected clients when a new publication is - created.

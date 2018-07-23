@@ -21,6 +21,8 @@ server.use('/assets', express.static(path.join(__dirname, '/../build')));
  */
 
 server.use('/', require('./routes/index'));
+server.use('/api/publishings', require('./routes/publishings'));
+server.use('/api/reach', require('./routes/reach'));
 
 // catch 404 and forward to error handler
 server.use(function (req, res, next) {
