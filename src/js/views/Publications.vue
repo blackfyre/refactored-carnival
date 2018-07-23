@@ -4,6 +4,7 @@
 
 <script>
 import CrudTable from "../components/CRUDTable.vue";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -25,9 +26,27 @@ export default {
   components: {
     CrudTable
   },
+  computed: {
+    ...mapGetters([])
+  },
   created() {
     /* TODO: initial load to store */
+    this.fetchLatestPublications();
     /* TODO: add listener for socket, and add new row as requested */
+  },
+  methods: {
+    ...mapActions(["storeInitialPublishings"]),
+    fetchLatestPublications() {
+      this.$http
+        .get("/api/publishings")
+        .then(response => {
+          console.log(response);
+          this.storeInitialPublishings(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   }
 };
 </script>

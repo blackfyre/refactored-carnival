@@ -1,5 +1,10 @@
 <template>
-    <b-table show-empty :items="data"></b-table>
+    <div>
+        <h1>Publications</h1>
+        <p><button class="btn btn-primary"><i class="fa fa-plus"></i> Add new publication</button></p>
+
+        <b-table show-empty :items="data" :fields="actualFields"></b-table>
+    </div>
 </template>
 
 <script>
@@ -46,6 +51,15 @@ export default {
       default() {
         return {};
       }
+    }
+  },
+  computed: {
+    actualFields() {
+      let fields = this.fields;
+      fields.actions = {
+        label: "Actions"
+      };
+      return;
     }
   }
 };

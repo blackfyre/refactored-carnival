@@ -10,6 +10,7 @@ const router = new VueRouter({
 });
 
 Vue.use(VueRouter);
+Vue.prototype.$http = require('axios');
 
 new Vue({
     router,
