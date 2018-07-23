@@ -13,5 +13,9 @@ let mix = require('laravel-mix');
 
 mix
     .setPublicPath('./build')
+    .options({
+        processCssUrls: false,
+    })
+    .copy('node_modules/@fortawesome/fontawesome-free-webfonts/webfonts/*.*', 'build/fonts')
     .js('src/js/app.js', 'build/js')
     .sass('src/scss/app.scss', 'build/css');
