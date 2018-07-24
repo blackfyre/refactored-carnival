@@ -1,49 +1,50 @@
 <template>
     <div>
         <h1>Publications</h1>
-        <p><button class="btn btn-primary"><i class="fa fa-plus"></i> Add new publication</button></p>
+        <p v-if="createRow"><button class="btn btn-primary" v-on:click="emitEvent('item-create')"><i class="fa fa-plus"></i> Add new publication</button></p>
 
-        <b-table show-empty :items="data" :fields="actualFields"></b-table>
+        <b-table
+            :id="tableId"
+            show-empty
+            :items="data"
+            :fields="actualFields"
+            :filter="null"
+        >
+          <template slot="actions" slot-scope="row">
+            <button v-if="readRow" class="btn btn-sm btn-primary" v-on:click="emitEvent('item-details', row.item)">Details</button>
+            <button v-if="updateRow" class="btn btn-sm btn-warning" v-on:click="emitEvent('item-edit', row.item)">Edit</button>
+            <button v-if="deleteRow" class="btn btn-sm btn-danger" v-on:click="emitEvent('item-delete', row.item)">Delete</button>
+          </template>
+        </b-table>
     </div>
 </template>
 
 <script>
 import bTable from "bootstrap-vue/es/components/table/table";
+import _ from "lodash";
 export default {
   name: "crud-table",
   components: { bTable },
   props: {
     data: {
       required: true,
-      type: Array
+      type: [Array, Function]
     },
-    create: {
+    createRow: {
       type: Boolean,
       default: true
     },
-    read: {
+    readRow: {
       type: Boolean,
       default: true
     },
-    update: {
+    updateRow: {
       type: Boolean,
       default: true
     },
-    delete: {
+    deleteRow: {
       type: Boolean,
       default: true
-    },
-    endpoints: {
-      type: Object,
-      required: true,
-      default() {
-        return {
-          create: "",
-          read: "",
-          update: "",
-          delete: ""
-        };
-      }
     },
     fields: {
       type: Object,
@@ -51,6 +52,10 @@ export default {
       default() {
         return {};
       }
+    },
+    tableId: {
+      type: String,
+      default: _.uniqueId("crud-")
     }
   },
   computed: {
@@ -59,7 +64,12 @@ export default {
       fields.actions = {
         label: "Actions"
       };
-      return;
+      return fields;
+    }
+  },
+  methods: {
+    emitEvent(eventType, data) {
+      this.$emit(eventType, data);
     }
   }
 };

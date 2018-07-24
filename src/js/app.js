@@ -11,6 +11,7 @@ const router = new VueRouter({
 
 Vue.use(VueRouter);
 Vue.prototype.$http = require('axios');
+Vue.prototype.$eventBus = new Vue({});
 
 new Vue({
     router,

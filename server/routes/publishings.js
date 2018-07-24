@@ -36,6 +36,13 @@ router.put('/publication/:mongo_id', (req, res) => {
 
 router.delete('/publication/:mongo_id', (req, res) => {
     /* TODO: delete single item */
+    _.remove(mockDB, (row) => {
+        return row.id === req.params.mongo_id;
+    });
+
+    res.json({
+        result: 'ok'
+    });
 });
 
 module.exports = router;

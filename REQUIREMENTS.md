@@ -5,7 +5,7 @@ The task is to implement a web-app. You’re free to choose the technologies, fr
 - [ ] Create a graph page rendering the reach data, using a library like d3.js or Highcharts
 - [ ] Create a websocket implementation and push the data to connected clients when a new publication is - created.
 - [ ] Create a websocket implementation and add data points to the reach graph in real time.
-- [ ] The deliverable should be accessible from a GitHub repository (private or public)
+- [x] The deliverable should be accessible from a GitHub repository (private or public)
 - [ ] Optional: Implement the solution in Typescript
 - [ ] Optional: Deliver the solution in a Dockerized setup
 
