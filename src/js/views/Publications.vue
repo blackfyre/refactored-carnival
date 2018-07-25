@@ -7,6 +7,7 @@
         @item-create="createRow"
         @item-edit="updateRow"
         @item-delete="deleteRow"
+        @item-details="viewRow"
         :table-id="tableId"
         ></crud-table>
 
@@ -20,6 +21,8 @@
         >
             <p>Are you sure you want to delete the selected record?</p>
         </b-modal>
+
+        <edit ref="editor"></edit>
     </div>
 </template>
 
@@ -28,6 +31,7 @@ import CrudTable from "../components/CRUDTable.vue";
 import { mapGetters, mapActions } from "vuex";
 import bModal from "bootstrap-vue/es/components/modal/modal";
 import _ from "lodash";
+import Edit from "../components/CRUDItems/Publishing/Edit.vue";
 export default {
   data() {
     return {
@@ -60,7 +64,8 @@ export default {
   },
   components: {
     CrudTable,
-    bModal
+    bModal,
+    Edit
   },
   computed: {
     ...mapGetters(["latestPublications"])
@@ -82,6 +87,10 @@ export default {
         .catch(error => {
           $vm.$eventBus.$emit("ajax-error", error);
         });
+    },
+    viewRow(event) {
+      console.log(event);
+      this.$refs.editor.openModal(event.id);
     },
     createRow(event) {
       console.log(event);
