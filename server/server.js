@@ -4,6 +4,7 @@ let path = require('path');
 let server = express();
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
+let io = require('socket.io')();
 
 server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'jade');
@@ -14,6 +15,7 @@ server.use(express.urlencoded({
 }));
 server.use(cookieParser());
 server.use('/assets', express.static(path.join(__dirname, '/../build')));
+server.io = io;
 
 /*
  * For production, there should be an authorization middleware to prevent the misuse of the API
@@ -21,7 +23,7 @@ server.use('/assets', express.static(path.join(__dirname, '/../build')));
  */
 
 server.use('/', require('./routes/index'));
-server.use('/api/publishings', require('./routes/publishings'));
+server.use('/api/publishings', require('./routes/publishings')(io));
 server.use('/api/reach', require('./routes/reach'));
 
 // catch 404 and forward to error handler

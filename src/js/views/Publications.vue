@@ -90,13 +90,13 @@ export default {
     },
     viewRow(event) {
       console.log(event);
-      this.$refs.editor.openModal(event.id);
+      this.$refs.editor.openModal(event.id, true);
     },
     createRow(event) {
       console.log(event);
     },
     updateRow(event) {
-      console.log(event);
+      this.$refs.editor.openModal(event.id, false);
     },
     deleteRow(event) {
       this.modals.deleteModal = true;

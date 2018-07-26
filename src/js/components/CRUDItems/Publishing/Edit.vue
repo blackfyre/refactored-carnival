@@ -1,6 +1,9 @@
 <template>
     <div>
-        <b-modal ref="editor">
+        <b-modal
+            ref="editor"
+            :title="modalTitle"
+        >
             <vue-form-generator
             :schema="schema"
             :model="publication"
@@ -17,19 +20,14 @@ import tz from "timezones.json";
 import publicationSchema from "../../../forms/publication";
 
 export default {
-  props: {
-    readonly: {
-      type: Boolean,
-      default: true
-    }
-  },
   data() {
     return {
       publication: {},
       formOptions: {
         validateAfterLoad: true,
         validateAfterChanged: true
-      }
+      },
+      readonly: false
     };
   },
   components: {
@@ -46,12 +44,22 @@ export default {
       });
 
       return schema;
+    },
+    modalTitle() {
+      let title = "Edit publication";
+
+      if (this.readonly) {
+        title = "Publication details";
+      }
+
+      return title;
     }
   },
   methods: {
     ...mapActions([]),
-    openModal(id) {
+    openModal(id, readonly = false) {
       this.publication = this.singlePublication(id);
+      this.readonly = readonly;
       this.$refs.editor.show();
     },
     closeModal() {

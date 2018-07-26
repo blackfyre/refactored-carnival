@@ -6,43 +6,79 @@ let _ = require('lodash');
 
 let mockDB = JSON.parse(fs.readFileSync(path.join(__dirname, '../../data_src/publishings.json')));
 
-/* TODO: load json as source once */
+module.exports = (io) => {
 
-/* RESTful publishings */
-router.get('/', (req, res) => {
-    res.json(mockDB);
-});
+    /* Create namespace for socket */
+    let nsp = io.of('/publications');
 
-router.post('/', (req, res) => {
-    /* TODO: store new item */
-});
-
-router.get('/publication/:mongo_id', (req, res) => {
-    let query = _.find(mockDB, {
-        id: req.params.mongo_id
+    nsp.on('connection', (socket) => {
+        console.log('user connected to publications nsp');
     });
 
-    if (_.isObject(query)) {
-        res.json(query);
-    } else {
-        res.status(404).end();
-    }
 
-});
-
-router.put('/publication/:mongo_id', (req, res) => {
-    /* TODO: update single item */
-});
-
-router.delete('/publication/:mongo_id', (req, res) => {
-    /* TODO: delete single item */
-    _.remove(mockDB, (row) => {
-        return row.id === req.params.mongo_id;
+    /* RESTful publishings */
+    router.get('/', (req, res) => {
+        res.json(mockDB);
     });
 
-    res.json({
-        result: 'ok'
-    });
-});
+    router.post('/', (req, res) => {
+        /* Store the new item */
+        mockDB.push(req.body);
 
-module.exports = router;
+        /* Notify the name space */
+        nsp.emit('new', req.body);
+
+        /* Close the request */
+        res.json({
+            result: 'ok'
+        });
+    });
+
+    router.get('/publication/:mongo_id', (req, res) => {
+        let query = _.find(mockDB, {
+            id: req.params.mongo_id
+        });
+
+        if (_.isObject(query)) {
+            res.json(query);
+        } else {
+            res.status(404).end();
+        }
+
+    });
+
+    router.put('/publication/:mongo_id', (req, res) => {
+        /* TODO: update single item */
+        let query = _.find(mockDB, {
+            id: req.body.id
+        });
+
+        _.each(req.body, (value, key) => {
+            /* should match proprties */
+            query[key] = value;
+        });
+
+        /* Notify the name space */
+        nsp.emit('update', req.body);
+
+        res.json({
+            result: 'ok'
+        });
+    });
+
+    router.delete('/publication/:mongo_id', (req, res) => {
+        /* delete single item */
+        _.remove(mockDB, (row) => {
+            return row.id === req.params.mongo_id;
+        });
+
+        /* Notify the name space */
+        nsp.emit('delete', req.params.mongo_id);
+
+        res.json({
+            result: 'ok'
+        });
+    });
+
+    return router;
+};

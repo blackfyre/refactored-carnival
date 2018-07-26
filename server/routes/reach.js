@@ -9,26 +9,76 @@ let mockDB = {
     '8a1330c93e31b8af013e360d6a2106ea': JSON.parse(fs.readFileSync(path.join(__dirname, '../../data_src/reach.json')))
 };
 
-router.post('/publication', (req, res) => {
-    /* TODO: store new item */
-});
+module.exports = (io) => {
 
-router.get('/publication/:mongo_id', (req, res) => {
+    /* Create namespace for socket */
+    let nsp = io.of('/reach');
 
-    if (_.isArray(mockDB[req.params.mongo_id])) {
-        res.json(mockDB[req.params.mongo_id]);
-    } else {
-        res.status(404).end();
-    }
+    nsp.on('connection', (socket) => {
+        console.log('user connected to reach nsp');
+    });
 
-});
+    router.post('/publication', (req, res) => {
+        /* TODO: store new item */
+        mockDB[req.body.mongo_id].push(req.body.content);
 
-router.put('/publication/:mongo_id', (req, res) => {
-    /* TODO: update single item */
-});
+        nsp.emit('update', req.body.content);
 
-router.delete('/publication/:mongo_id', (req, res) => {
-    /* TODO: delete single item */
-});
+        /* Close the request */
+        res.json({
+            result: 'ok'
+        });
+    });
 
-module.exports = router;
+    router.get('/publication/:mongo_id', (req, res) => {
+
+        if (_.isArray(mockDB[req.params.mongo_id])) {
+            res.json(mockDB[req.params.mongo_id]);
+        } else {
+            res.status(404).end();
+        }
+
+    });
+
+    router.put('/publication/:mongo_id', (req, res) => {
+        /* TODO: update single item */
+        let query = _.find(mockDB[req.params.mongo_id], (item) => {
+
+            return item['post_impressions'][0] == {
+                'value': req.body.o['post_impressions'][0]['value'],
+                'timestamp': req.body.o['post_impressions'][0]['timestamp']
+            };
+        });
+
+        _.each(req.body.n, (value, key) => {
+            query[key] = value;
+        });
+
+        nsp.emit('update', req.body.content);
+
+        /* Close the request */
+        res.json({
+            result: 'ok'
+        });
+
+    });
+
+    router.delete('/publication/:mongo_id', (req, res) => {
+        /* delete single item */
+        _.remove(mockDB[req.params.mongo_id], (row) => {
+            return row['post_impressions'][0] == {
+                'value': req.body.o['post_impressions'][0]['value'],
+                'timestamp': req.body.o['post_impressions'][0]['timestamp']
+            };
+        });
+
+        /* Notify the name space */
+        nsp.emit('delete', req.body);
+
+        res.json({
+            result: 'ok'
+        });
+    });
+
+    return router;
+};
