@@ -73,7 +73,7 @@ export default {
   created() {
     /* TODO: initial load to store */
     this.fetchLatestPublications();
-    /* TODO: add listener for socket, and add new row as requested */
+    /* TODO: add listener for socket, and modify rows as requested */
   },
   methods: {
     ...mapActions(["storeInitialPublishings", "deletePublication"]),

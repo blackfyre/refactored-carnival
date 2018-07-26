@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import Vue from 'vue';
 import VueFormGenerator from 'vue-form-generator';
 import 'vue-form-generator/dist/vfg.css';
+import VueHighcharts from 'vue-highcharts';
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 import VueRouter from 'vue-router';
@@ -20,6 +21,7 @@ window.$ = jQuery;
 
 Vue.use(VueRouter);
 Vue.use(VueFormGenerator);
+Vue.use(VueHighcharts);
 Vue.component('fieldLuxonDateTime', LuxonDateTime);
 Vue.component('multiselect', Multiselect);
 Vue.prototype.$http = require('axios');

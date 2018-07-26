@@ -1,5 +1,5 @@
 <template>
-
+<h1>Dashobard</h1>
 </template>
 
 <script>
