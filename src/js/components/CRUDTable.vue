@@ -1,7 +1,6 @@
 <template>
     <div>
-        <h1>Publications</h1>
-        <p v-if="createRow"><button class="btn btn-primary" v-on:click="emitEvent('item-create')"><i class="fa fa-plus"></i> Add new publication</button></p>
+        <p v-if="createRow"><button class="btn btn-primary" v-on:click="emitEvent('item-create')"><i class="fa fa-plus"></i> {{newButtonText}}</button></p>
 
         <b-table
             :id="tableId"
@@ -56,6 +55,10 @@ export default {
     tableId: {
       type: String,
       default: _.uniqueId("crud-")
+    },
+    newButtonText: {
+      type: String,
+      default: "New item"
     }
   },
   computed: {
